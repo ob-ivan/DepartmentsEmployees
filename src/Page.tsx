@@ -41,8 +41,12 @@ export class Page extends React.Component<PageProps, PageState> {
         </span>;
     }
     private renderCurrentGrid(): JSX.Element {
-        // TODO
-        return <div></div>;
+        switch (this.state.selectedTab) {
+            case 'DEPARTMENTS': return <DepartmentGrid
+                backendBaseUrl={this.props.backendBaseUrl}
+            />;
+            case 'EMPLOYEES': return <EmployeeGrid/>;
+        }
     }
     private selectTab(selectedTab: EditorTab): void {
         this.setState({ selectedTab });

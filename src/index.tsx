@@ -4,7 +4,7 @@ import { Page } from "./Page";
 
 ReactDOM.render(
     <Page
-        backendBaseUrl="http://localhost:3000/"
+        backendBaseUrl="http://localhost:3000"
     />,
     document.getElementById('root')
 );
