@@ -1,6 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as classNames from "classnames";
+import { DepartmentGrid } from "./DepartmentGrid";
+import { EmployeeGrid } from "./EmployeeGrid";
 
 type EditorTab = 'DEPARTMENTS' | 'EMPLOYEES';
 

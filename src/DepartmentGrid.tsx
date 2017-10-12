@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import * as ReactDataGrid from "react-data-grid";
 
 type Department = {
     id: number;
@@ -15,8 +16,20 @@ type DepartmentGridState = {
 }
 
 export class DepartmentGrid extends React.Component<DepartmentGridProps, DepartmentGridState> {
+    private columns: ReactDataGrid.Column[];
     public constructor(props: DepartmentGridProps) {
         super(props);
+        this.columns = [
+            {
+                key: "id",
+                name: "ID",
+            },
+            {
+                key: "name",
+                name: "Name",
+                editable: true,
+            },
+        ];
         this.state = {
             items: null
         };
@@ -33,8 +46,10 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
         if (!this.state.items) {
             return null;
         }
-        return <table>
-            {this.state.items.map(department => <DepartmentRow item={department}/>)}
-        </table>;
+        return <ReactDataGrid
+            columns={this.columns}
+            rowGetter={(i: number) => this.state.items[i]}
+            rowsCount={this.state.items.length}
+        />;
     }
 }
