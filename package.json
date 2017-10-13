@@ -1,15 +1,15 @@
 {
   "dependencies": {
     "@types/classnames": "^2.2.3",
-    "@types/react": "^16.0.10",
+    "@types/react": "^15.0.0",
     "@types/react-data-grid": "^2.0.6",
-    "@types/react-dom": "^16.0.1",
+    "@types/react-dom": "^15.0.0",
     "awesome-typescript-loader": "^3.2.3",
     "classnames": "^2.2.5",
     "json-server": "^0.12.0",
-    "react": "^16.0.0",
+    "react": "^15.0.0",
     "react-data-grid": "^2.0.60",
-    "react-dom": "^16.0.0",
+    "react-dom": "^15.0.0",
     "source-map-loader": "^0.2.2",
     "typescript": "^2.5.3",
     "webpack": "^3.7.1"
