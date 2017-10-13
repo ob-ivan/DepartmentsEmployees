@@ -34,13 +34,11 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
             items: null
         };
     }
-    public init(): void {
-        if (!this.state.items) {
-            window.fetch(`${this.props.backendBaseUrl}/departments`)
-                .then(response => response.json())
-                .then(items => this.setState({ items }))
-            ;
-        }
+    public componentDidMount(): void {
+        window.fetch(`${this.props.backendBaseUrl}/departments`)
+            .then(response => response.json())
+            .then(items => this.setState({ items }))
+        ;
     }
     public render() {
         if (!this.state.items) {
