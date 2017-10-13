@@ -46,8 +46,29 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
         }
         return <ReactDataGrid
             columns={this.columns}
-            rowGetter={(i: number) => this.state.items[i]}
+            rowGetter={this.rowGetter}
             rowsCount={this.state.items.length}
+            onGridRowsUpdated={this.onGridRowsUpdated}
         />;
+    }
+    private rowGetter(i: number): Department {
+        if (i < this.state.items.length) {
+            return this.state.items[i];
+        }
+        // Placeholder for a new item.
+        return {
+            id: i,
+            name: '',
+        }
+    }
+    private onGridRowsUpdated({ fromRow, toRow, updated }) {
+        let items = this.state.items.slice();
+
+        for (let i = fromRow; i <= toRow; i++) {
+            let rowToUpdate = items[i];
+            let updatedRow = React.addons.update(rowToUpdate, {$merge: updated});
+            items[i] = updatedRow;
+        }
+        this.setState({ items });
     }
 }
