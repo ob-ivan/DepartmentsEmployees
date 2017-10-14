@@ -6,6 +6,10 @@
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.3.tgz#3f0ff6873da793870e20a260cada55982f38a9e5"
 
+"@types/immutability-helper@^2.0.15":
+  version "2.0.15"
+  resolved "https://registry.yarnpkg.com/@types/immutability-helper/-/immutability-helper-2.0.15.tgz#1bd2d11e850791267a6302ab86107c0b0ad01bfa"
+
 "@types/react-data-grid@^2.0.6":
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/@types/react-data-grid/-/react-data-grid-2.0.6.tgz#10bd3bef7ca4fe0028d767aeefd577c0bb99ea2c"

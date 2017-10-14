@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as ReactDataGrid from "react-data-grid";
-import update from "immutability-helper";
+import * as update from "immutability-helper";
 
 type Department = {
     id: number;
@@ -62,9 +62,10 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
             name: '',
         }
     }
-    private onGridRowsUpdated({ fromRow, toRow, updated }) {
+    private onGridRowsUpdated(
+        { fromRow, toRow, updated }: ReactDataGrid.GridRowsUpdatedEvent
+    ) {
         let items = this.state.items.slice();
-
         for (let i = fromRow; i <= toRow; i++) {
             let rowToUpdate = items[i];
             let updatedRow = update(rowToUpdate, {$merge: updated});
