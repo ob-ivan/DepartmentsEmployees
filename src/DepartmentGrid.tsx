@@ -2,8 +2,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as ReactDataGrid from "react-data-grid";
 import * as update from "immutability-helper";
-
-type Verb = 'SELECT' | 'INSERT' | 'REPLACE';
+import { RequestFactory } from "./RequestFactory";
 
 type Department = {
     id: number;
@@ -11,7 +10,7 @@ type Department = {
 }
 
 type DepartmentGridProps = {
-    backendBaseUrl: string
+    requestFactory: RequestFactory
 }
 
 type DepartmentGridState = {
@@ -26,6 +25,7 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
             {
                 key: "id",
                 name: "ID",
+                width: 50,
             },
             {
                 key: "name",
@@ -66,11 +66,11 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
             items[i] = updatedRow;
             if (updatedRow.id) {
                 requests.push(
-                    this.createRequest<Department>('REPLACE', updatedRow)
+                    this.props.requestFactory.createRequest<Department>('REPLACE', updatedRow)
                 );
             } else {
                 requests.push(
-                    this.createRequest<Department>('INSERT', updatedRow)
+                    this.props.requestFactory.createRequest<Department>('INSERT', updatedRow)
                 );
             }
         }
@@ -82,7 +82,7 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
         );
     }
     private reload() {
-        window.fetch(this.createRequest('SELECT'))
+        window.fetch(this.props.requestFactory.createRequest('SELECT'))
             .then(response => response.json())
             .then(items => {
                 // Placeholder for the new item.
@@ -93,38 +93,5 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
                 this.setState({ items });
             })
         ;
-    }
-    private createRequest<T extends { id: number }>(verb: Verb, itemData?: T): Request {
-        let url: string,
-            method: string,
-            init: boolean;
-        switch (verb) {
-            case 'INSERT':
-                url = `${this.props.backendBaseUrl}/departments`;
-                method = 'POST';
-                init = true;
-                break;
-            case 'REPLACE':
-                url = `${this.props.backendBaseUrl}/departments/${itemData.id}`;
-                method = 'PUT';
-                init = true;
-                break;
-            case 'SELECT':
-                url = `${this.props.backendBaseUrl}/departments`;
-                method = 'GET';
-                init = false;
-                break;
-        }
-        let initArg: object[] = [];
-        if (init) {
-            initArg.push({
-                method,
-                body: JSON.stringify(itemData),
-                headers: {
-                    "Content-Type": "application/json",
-                }
-            });
-        }
-        return new Request(url, ...initArg);
     }
 }
