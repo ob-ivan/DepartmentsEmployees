@@ -3,6 +3,8 @@ import * as ReactDOM from "react-dom";
 import * as ReactDataGrid from "react-data-grid";
 import * as update from "immutability-helper";
 
+type Verb = 'SELECT' | 'INSERT' | 'REPLACE';
+
 type Department = {
     id: number;
     name: string;
@@ -63,27 +65,13 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
             let updatedRow = update(rowToUpdate, {$merge: updated});
             items[i] = updatedRow;
             if (updatedRow.id) {
-                requests.push(new Request(
-                    `${this.props.backendBaseUrl}/departments/${updatedRow.id}`,
-                    {
-                        method: 'PUT',
-                        body: JSON.stringify(updatedRow),
-                        headers: {
-                            "Content-Type": "application/json",
-                        }
-                    }
-                ));
+                requests.push(
+                    this.createRequest<Department>('REPLACE', updatedRow)
+                );
             } else {
-                requests.push(new Request(
-                    `${this.props.backendBaseUrl}/departments`,
-                    {
-                        method: 'POST',
-                        body: JSON.stringify(updatedRow),
-                        headers: {
-                            "Content-Type": "application/json",
-                        }
-                    }
-                ));
+                requests.push(
+                    this.createRequest<Department>('INSERT', updatedRow)
+                );
             }
         }
         this.setState(
@@ -94,7 +82,7 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
         );
     }
     private reload() {
-        window.fetch(`${this.props.backendBaseUrl}/departments`)
+        window.fetch(this.createRequest('SELECT'))
             .then(response => response.json())
             .then(items => {
                 // Placeholder for the new item.
@@ -105,5 +93,38 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
                 this.setState({ items });
             })
         ;
+    }
+    private createRequest<T extends { id: number }>(verb: Verb, itemData?: T): Request {
+        let url: string,
+            method: string,
+            init: boolean;
+        switch (verb) {
+            case 'INSERT':
+                url = `${this.props.backendBaseUrl}/departments`;
+                method = 'POST';
+                init = true;
+                break;
+            case 'REPLACE':
+                url = `${this.props.backendBaseUrl}/departments/${itemData.id}`;
+                method = 'PUT';
+                init = true;
+                break;
+            case 'SELECT':
+                url = `${this.props.backendBaseUrl}/departments`;
+                method = 'GET';
+                init = false;
+                break;
+        }
+        let initArg: object[] = [];
+        if (init) {
+            initArg.push({
+                method,
+                body: JSON.stringify(itemData),
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+        }
+        return new Request(url, ...initArg);
     }
 }
