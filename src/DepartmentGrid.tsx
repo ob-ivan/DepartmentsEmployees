@@ -47,9 +47,10 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
         }
         return <ReactDataGrid
             columns={this.columns}
-            rowGetter={this.rowGetter}
+            enableCellSelect={true}
+            onGridRowsUpdated={e => this.onGridRowsUpdated(e)}
+            rowGetter={i => this.rowGetter(i)}
             rowsCount={this.state.items.length}
-            onGridRowsUpdated={this.onGridRowsUpdated}
         />;
     }
     private rowGetter(i: number): Department {
