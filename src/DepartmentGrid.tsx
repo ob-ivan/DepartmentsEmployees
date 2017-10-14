@@ -57,12 +57,13 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
         { fromRow, toRow, updated }: ReactDataGrid.GridRowsUpdatedEvent
     ) {
         let items = this.state.items.slice();
+        let requests: Request[] = [];
         for (let i = fromRow; i <= toRow; i++) {
             let rowToUpdate = items[i];
             let updatedRow = update(rowToUpdate, {$merge: updated});
             items[i] = updatedRow;
             if (updatedRow.id) {
-                window.fetch(
+                requests.push(new Request(
                     `${this.props.backendBaseUrl}/departments/${updatedRow.id}`,
                     {
                         method: 'PUT',
@@ -71,9 +72,9 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
                             "Content-Type": "application/json",
                         }
                     }
-                ).then(() => this.reload())
+                ));
             } else {
-                window.fetch(
+                requests.push(new Request(
                     `${this.props.backendBaseUrl}/departments`,
                     {
                         method: 'POST',
@@ -82,11 +83,15 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
                             "Content-Type": "application/json",
                         }
                     }
-                ).then(() => this.reload())
+                ));
             }
         }
-        // FIXME: Race condition with window.fetch
-        this.setState({ items });
+        this.setState(
+            { items },
+            () => Promise
+                .all(requests.map(request => window.fetch(request)))
+                .then(() => this.reload())
+        );
     }
     private reload() {
         window.fetch(`${this.props.backendBaseUrl}/departments`)
