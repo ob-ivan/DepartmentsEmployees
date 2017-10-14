@@ -1,2 +1,3 @@
 #!/bin/bash
+# Start backend server on local port the page expects to respond.
 npm run json-server

@@ -1,2 +1,3 @@
 #!/bin/bash
+# Initialize database with default values.
 cp db-dist.json db.json

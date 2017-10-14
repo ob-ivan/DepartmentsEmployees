@@ -1,2 +1,3 @@
 #!/bin/bash
+# Compile TS and TSX files to JS and link dependencies.
 npm run webpack
