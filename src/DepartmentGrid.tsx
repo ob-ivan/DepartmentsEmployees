@@ -66,7 +66,10 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
                     `${this.props.backendBaseUrl}/departments/${updatedRow.id}`,
                     {
                         method: 'PUT',
-                        body: JSON.stringify(updatedRow)
+                        body: JSON.stringify(updatedRow),
+                        headers: {
+                            "Content-Type": "application/json",
+                        }
                     }
                 ).then(() => this.reload())
             } else {
@@ -74,7 +77,10 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
                     `${this.props.backendBaseUrl}/departments`,
                     {
                         method: 'POST',
-                        body: JSON.stringify(updatedRow)
+                        body: JSON.stringify(updatedRow),
+                        headers: {
+                            "Content-Type": "application/json",
+                        }
                     }
                 ).then(() => this.reload())
             }
