@@ -1,4 +1,4 @@
-type Verb = 'SELECT' | 'INSERT' | 'REPLACE';
+export type Verb = 'SELECT' | 'INSERT' | 'REPLACE';
 
 export class RequestFactory {
     public constructor(private resourceBaseUrl: string) {}

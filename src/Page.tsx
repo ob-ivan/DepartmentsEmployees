@@ -3,7 +3,6 @@ import * as ReactDOM from "react-dom";
 import * as classNames from "classnames";
 import { DepartmentGrid } from "./DepartmentGrid";
 import { EmployeeGrid } from "./EmployeeGrid";
-import { RequestFactory } from "./RequestFactory";
 
 type EditorTab = 'DEPARTMENTS' | 'EMPLOYEES';
 
@@ -46,7 +45,7 @@ export class Page extends React.Component<PageProps, PageState> {
     private renderCurrentGrid(): JSX.Element {
         switch (this.state.selectedTab) {
             case 'DEPARTMENTS': return <DepartmentGrid
-                requestFactory={new RequestFactory(`${this.props.backendBaseUrl}/departments`)}
+                backendBaseUrl={this.props.backendBaseUrl}
             />;
             case 'EMPLOYEES': return <EmployeeGrid/>;
         }
