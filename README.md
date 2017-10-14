@@ -18,6 +18,7 @@ Clone the repo and `cd` to its folder. Then:
 ```
 yarn install
 ./webpack
+./init
 ./json-server
 ```
 
