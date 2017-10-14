@@ -40,6 +40,19 @@ export class Grid extends React.Component<GridProps, GridState> {
             rowsCount={this.state.items.length}
         />;
     }
+    private getColumns() {
+        let actionsColumn: ReactDataGrid.Column = {
+            name: 'Actions',
+            key: '$delete',
+            getRowMetaData: (row: Item) => row,
+            formatter: ({ dependentValues }) => (
+                <span>
+                    <button onClick={() => this.deleteRow(dependentValues.id)}>Delete</button>
+                </span>
+            ),
+        };
+        return update(this.props.columns, { $push : [actionsColumn]});
+    }
     private rowGetter(i: number): Item {
         return this.state.items[i];
     }
@@ -64,6 +77,16 @@ export class Grid extends React.Component<GridProps, GridState> {
                 .then(() => this.reload())
         );
     }
+    private deleteRow(id: number) {
+        let items: Item[] = this.state.items.filter(item => item.id !== id);
+        let [deletedItem]: Item[] = this.state.items.filter(item => item.id === id);
+        this.setState(
+            { items },
+            () => window
+                .fetch(this.createRequest('DELETE', deletedItem))
+                .then(() => this.reload())
+        );
+    }
     private reload() {
         window.fetch(this.props.requestFactory.createRequest('SELECT'))
             .then(response => response.json())
@@ -73,5 +96,8 @@ export class Grid extends React.Component<GridProps, GridState> {
                 this.setState({ items });
             })
         ;
+    }
+    private createRequest(verb: Verb, item?: Item): Request {
+        return this.props.requestFactory.createRequest<Item>(verb, item);
     }
 }

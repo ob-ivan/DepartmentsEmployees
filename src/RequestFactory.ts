@@ -1,4 +1,4 @@
-export type Verb = 'SELECT' | 'INSERT' | 'REPLACE';
+export type Verb = 'SELECT' | 'INSERT' | 'REPLACE' | 'DELETE';
 
 export class RequestFactory {
     public constructor(private resourceBaseUrl: string) {}
@@ -20,6 +20,11 @@ export class RequestFactory {
             case 'SELECT':
                 url = this.resourceBaseUrl;
                 method = 'GET';
+                init = false;
+                break;
+            case 'DELETE':
+                url = `${this.resourceBaseUrl}/${itemData.id}`;
+                method = 'DELETE';
                 init = false;
                 break;
         }
