@@ -36,10 +36,7 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
         };
     }
     public componentDidMount(): void {
-        window.fetch(`${this.props.backendBaseUrl}/departments`)
-            .then(response => response.json())
-            .then(items => this.setState({ items }))
-        ;
+        this.reload();
     }
     public render() {
         if (!this.state.items) {
@@ -54,14 +51,7 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
         />;
     }
     private rowGetter(i: number): Department {
-        if (i < this.state.items.length) {
-            return this.state.items[i];
-        }
-        // Placeholder for a new item.
-        return {
-            id: null,
-            name: '',
-        }
+        return this.state.items[i];
     }
     private onGridRowsUpdated(
         { fromRow, toRow, updated }: ReactDataGrid.GridRowsUpdatedEvent
@@ -71,7 +61,38 @@ export class DepartmentGrid extends React.Component<DepartmentGridProps, Departm
             let rowToUpdate = items[i];
             let updatedRow = update(rowToUpdate, {$merge: updated});
             items[i] = updatedRow;
+            if (updatedRow.id) {
+                window.fetch(
+                    `${this.props.backendBaseUrl}/departments/${updatedRow.id}`,
+                    {
+                        method: 'PUT',
+                        body: JSON.stringify(updatedRow)
+                    }
+                ).then(() => this.reload())
+            } else {
+                window.fetch(
+                    `${this.props.backendBaseUrl}/departments`,
+                    {
+                        method: 'POST',
+                        body: JSON.stringify(updatedRow)
+                    }
+                ).then(() => this.reload())
+            }
         }
+        // FIXME: Race condition with window.fetch
         this.setState({ items });
+    }
+    private reload() {
+        window.fetch(`${this.props.backendBaseUrl}/departments`)
+            .then(response => response.json())
+            .then(items => {
+                // Placeholder for the new item.
+                items.push({
+                    id: 0,
+                    name: '',
+                });
+                this.setState({ items });
+            })
+        ;
     }
 }
