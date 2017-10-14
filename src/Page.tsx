@@ -23,24 +23,26 @@ export class Page extends React.Component<PageProps, PageState> {
     }
     public render() {
         return <div>
-            <div>
-                {this.renderTab('DEPARTMENTS')}
-                {this.renderTab('EMPLOYEES')}
+            <div className="left">
+                <ul>
+                    {this.renderTab('DEPARTMENTS')}
+                    {this.renderTab('EMPLOYEES')}
+                </ul>
             </div>
-            <div>
+            <div className="right">
                 {this.renderCurrentGrid()}
             </div>
         </div>;
     }
     private renderTab(tab: EditorTab): JSX.Element {
-        return <span
+        return <li
             className={classNames({
                 active: this.state.selectedTab === tab
             })}
             onClick={() => this.selectTab(tab)}
         >
             {tab}
-        </span>;
+        </li>;
     }
     private renderCurrentGrid(): JSX.Element {
         switch (this.state.selectedTab) {

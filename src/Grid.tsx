@@ -50,6 +50,7 @@ export class Grid extends React.Component<GridProps, GridState> {
                     <button onClick={() => this.deleteRow(dependentValues.id)}>Delete</button>
                 </span>
             ),
+            width: 100,
         };
         return update(this.props.columns, { $push : [actionsColumn]});
     }

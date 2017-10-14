@@ -1,0 +1,13 @@
+.left {
+    width: 20%;
+    height: 100%;
+    position: fixed;
+    outline: 1px solid;
+}
+.right {
+    width: 80%;
+    height: auto;
+    outline: 1px solid;
+    position: absolute;
+    right: 0;
+}

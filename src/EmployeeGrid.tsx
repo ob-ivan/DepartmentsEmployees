@@ -32,8 +32,8 @@ export class EmployeeGrid extends React.Component<EmployeeGridProps> {
                 key: "departmentId",
                 name: "Department ID",
                 editable: true,
-                width: 100,
-                // TODO: Enforce numeric type
+                width: 150,
+                // TODO: Provide a selector with options from departments table
             },
         ];
     }
