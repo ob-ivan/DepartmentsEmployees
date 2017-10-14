@@ -25,7 +25,7 @@ export class RequestFactory {
             case 'DELETE':
                 url = `${this.resourceBaseUrl}/${itemData.id}`;
                 method = 'DELETE';
-                init = false;
+                init = true;
                 break;
         }
         let initArg: object[] = [];

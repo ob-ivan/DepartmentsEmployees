@@ -33,14 +33,14 @@ export class Grid extends React.Component<GridProps, GridState> {
             return null;
         }
         return <ReactDataGrid
-            columns={this.props.columns}
+            columns={this.getColumns()}
             enableCellSelect={true}
             onGridRowsUpdated={e => this.onGridRowsUpdated(e)}
             rowGetter={i => this.rowGetter(i)}
             rowsCount={this.state.items.length}
         />;
     }
-    private getColumns() {
+    private getColumns(): ReactDataGrid.Column[] {
         let actionsColumn: ReactDataGrid.Column = {
             name: 'Actions',
             key: '$delete',
