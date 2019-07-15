@@ -11,12 +11,12 @@ provide an interface with two tabs in left pane (one for each model) and an edit
 
 Installation
 ------------
-You will need `yarn` to install and run this project.
+You will need `npm` to install and run this project.
 
 Clone the repo and `cd` to its folder. Then:
 
 ```
-yarn install
+npm ci
 ./webpack
 ./init
 ./json-server
