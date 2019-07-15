@@ -1,7 +1,6 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import * as ReactDataGrid from "react-data-grid";
-import * as update from "immutability-helper";
+import update from 'immutability-helper';
 import { RequestFactory, Verb } from "./RequestFactory";
 
 type Item = {
